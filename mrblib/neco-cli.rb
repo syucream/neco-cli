@@ -11,7 +11,7 @@ def parse(argv)
       else 
         optname = arg[1..-1]
       end
-      options[optname] = []
+      options[optname] = [] unless options.has_key? optname
     else
       if optname.nil?
         # maybe cmd
@@ -30,7 +30,7 @@ def help
 puts <<'EOS'
   usage: neco-cli <subcmd>
          neco-cli get <key> [--open <db options as JSON>]
-         neco-cli set <key> <value> [--open <db options as JSON>]
+         neco-cli put <key> <value> [--open <db options as JSON>]
 
   example: neco-cli set "key1" "value1" --open '{"name": redis, "addr": "127.0.0.1", "port": 6379}'
 
@@ -39,7 +39,6 @@ end
 
 def __main__(argv)
   parsed = parse(argv[1..-1])
-  p parsed
   commands = parsed[0]
   options = parsed[1]
 
@@ -50,8 +49,8 @@ def __main__(argv)
     help
   when "get"
     NecoCli::Cmd::get commands[1], options['open']
-  when "set"
-    NecoCli::Cmd::set commands[1], commands[2], options['open']
+  when "put"
+    NecoCli::Cmd::put commands[1], commands[2], options['open']
   else
     help
   end

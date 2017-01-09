@@ -2,12 +2,13 @@ module NecoCli
   module Cmd
     def self.get(key, opt_jsons)
       org = _get_org opt_jsons
-      p org.get_from_all key
+      values = org.get_from_all key
+      puts JSON::stringify values
     end
 
-    def self.set(key, value, opt_jsons)
+    def self.put(key, value, opt_jsons)
       org = _get_org opt_jsons
-      org.set key, value
+      org.put_to_all key, value
     end
 
     private
